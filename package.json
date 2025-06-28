@@ -1,0 +1,22 @@
+{
+  "name": "dentail-center-management-dashboard",
+  "version": "1.0.0",
+  "description": "A dashboard to manage dental appointments by dentists for patients",
+  "scripts": {
+    "start": "npx parcel index.html",
+    "build": "npx parcel build index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yash Joshi",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
+    "parcel": "^2.15.4",
+    "tailwindcss": "^4.1.11"
+  }
+}
