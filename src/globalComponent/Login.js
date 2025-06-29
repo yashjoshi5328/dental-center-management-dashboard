@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginForm from './LoginForm';
-const banner = new URL('../assets/logo.png', import.meta.url).href;
+// const banner = new URL('../assets/logo.png', import.meta.url).href;
 const sparrow = new URL('../assets/sparrow.png', import.meta.url);
 const Login = () => {
   return (

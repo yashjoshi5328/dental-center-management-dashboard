@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useValidate from '../utils/hooks/useValidate';
 import { login } from '../utils/loginAPI';
+import { saveUserToLocalStorage } from '../utils/localStorage';
+import { useNavigate } from 'react-router-dom';
 const logo = new URL('../assets/logo.png', import.meta.url);
 
 const LoginForm = () => {
@@ -14,6 +16,14 @@ const LoginForm = () => {
         message:''
     });
 
+    const navigate=useNavigate();
+
+    useEffect(()=>{
+      if(loginData.success){
+        saveUserToLocalStorage(loginData.user);
+        navigate(`/${role.toLowerCase()}`);
+      }
+    },[loginData]);
     const handleLogin=async (email,password,role)=>{
         try{
             const res= await login(email,password,role);
@@ -35,13 +45,14 @@ const LoginForm = () => {
       
       {/* Header */}
       <div className="flex justify-center items-center mb-4 ">
-        <h2 className="text-center font-bold text-2xl mt-16  relative">
+        <h2 className="text-center font-bold text-2xl mt-16  relative shadow-lg">
+            
+            Dental Center Dashboard
             <img
             className="w-20 h-20 absolute -top-10 -left-12  "
             src={logo.href}
             alt="logo"
             />
-            Dental Center Dashboard
         </h2>
       </div>
 
@@ -54,7 +65,7 @@ const LoginForm = () => {
       <div className="flex flex-col gap-4">
         {/* Email */}
         <div>
-          <label className="block mb-1 font-medium flex justify-between">Email 
+          <label className="mb-1 font-medium flex justify-between">Email 
             <span className='text-red-500'>
                 {emailError}
             </span>
