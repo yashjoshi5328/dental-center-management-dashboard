@@ -1,8 +1,7 @@
-import { users } from "../mockAPI/users";
-
-export function login(email, password,role) {
+export function login(email, password, role) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
+      const users = JSON.parse(localStorage.getItem('users')) || [];
       const user = users.find(
         (u) => u.email === email && u.password === password && u.role === role
       );

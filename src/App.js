@@ -1,53 +1,64 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Login from './globalComponent/Login';
-import { createBrowserRouter, Outlet} from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 import PatientDashboard from './components/patient/PatientDashboard';
 import AdminDashboard from './components/admin/AdminDashboard';
+import Patients from './components/admin/Patients';
+import Incidents from './components/admin/Incidents';
+import CalendarView from './components/admin/CalendarView';
+import AdminLayout from './components/admin/AdminLayout';
 import Navbar from './globalComponent/Navbar';
+import NotFound from './globalComponent/NotFound';
 import { RouterProvider } from 'react-router';
-import Appointments from './components/patient/Appointments';
-import History from './components/patient/History';
-import SideNavbar from './globalComponent/SideNavbar';
+import { getUserFromLocalStorage, isAdmin, isPatient } from './utils/auth';
+import { RootRedirect, RequireAdmin, RequirePatient } from './utils/RouteGuards';
 
 const App = () => {
   return (
     <div>
-      <Navbar/>
-      <Outlet/>
+      <Navbar />
+      <Outlet />
     </div>
-  )
-}
-const router=createBrowserRouter([
+  );
+};
+
+const router = createBrowserRouter([
   {
-    path:'/',
-    element:<App/>,
-    children:[
+    path: '/',
+    element: <App />,
+    errorElement: <NotFound />,
+    children: [
       {
-        path:'patient',
-        element:<PatientDashboard/>,
-        children:[
-          {
-            path:'appointments',
-            element:<Appointments/>
-          },
-          {
-            path:'history',
-            element:<History/>
-          }
-        ]
+        index: true,
+        element: <RootRedirect />,
       },
       {
-        path:'admin',
-        element:<AdminDashboard/>
-      }
-    ]
+        path: 'patient',
+        element: <RequirePatient><PatientDashboard /></RequirePatient>,
+      },
+      {
+        path: 'admin',
+        element: <RequireAdmin><AdminLayout /></RequireAdmin>,
+        children: [
+          { index: true, element: <AdminDashboard /> },
+          { path: 'patients', element: <Patients /> },
+          { path: 'incidents', element: <Incidents /> },
+          { path: 'calendar-view', element: <CalendarView /> },
+        ],
+      },
+    ],
   },
   {
-    path:'/login',
-    element:<Login/>
-  }
+    path: '/login',
+    element: <Login />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('app'));
-root.render(<RouterProvider router={router}/>);
+root.render(<RouterProvider router={router} />);

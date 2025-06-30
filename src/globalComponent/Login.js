@@ -1,8 +1,24 @@
 import React from 'react';
 import LoginForm from './LoginForm';
+import { users } from '../mockAPI/users';
+import { patients } from '../mockAPI/patients';
+import { incidents } from '../mockAPI/incidents';
 // const banner = new URL('../assets/logo.png', import.meta.url).href;
 const sparrow = new URL('../assets/sparrow.png', import.meta.url);
 const Login = () => {
+  // Save mockAPI data to localStorage if not already present
+  React.useEffect(() => {
+    if (!localStorage.getItem('users')) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+    if (!localStorage.getItem('patients')) {
+      localStorage.setItem('patients', JSON.stringify(patients));
+    }
+    if (!localStorage.getItem('incidents')) {
+      localStorage.setItem('incidents', JSON.stringify(incidents));
+    }
+  }, []);
+
   return (
     <div className="bg-gradient-to-tr to-[#e0f7ff] via-[#c0ecff] from-[#f8fdff]
  flex p-4 min-h-fit h-screen justify-center items-center">

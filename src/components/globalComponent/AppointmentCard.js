@@ -1,5 +1,5 @@
-import React from 'react';
-import { formatDateTime } from '../../utils/format';
+import React from "react";
+import { formatDateTime } from "../../utils/format";
 
 const AppointmentCard = ({ data, onClick }) => {
   const { id, title, appointmentDate } = data;

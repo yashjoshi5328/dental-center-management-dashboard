@@ -6,6 +6,7 @@ import { getIncidentInfo } from '../../utils/getIncidentInfo';
 import retrieveAppointmentAndHistory from '../../utils/retrieveAppointmentAndHistory';
 import HistoryCard from './HistoryCard';
 import AppointmentCard from './AppointmentCard';
+import ModalCard from './ModalCard';
 
 const PatientDashboard = () => {
   const [patient, setPatient] = useState(null);
@@ -13,6 +14,8 @@ const PatientDashboard = () => {
   const [incidentData, setIncidentData] = useState([]);
   const [appointmentData, setAppointmentData] = useState([]);
   const [historyData, setHistoryData] = useState([]);
+  const [modal,setModel] = useState({});
+  const [viewModal,setViewModal]=useState(false);
 
   useEffect(() => {
     const data = getUserFromLocalStorage(USER_KEY);
@@ -33,11 +36,19 @@ const PatientDashboard = () => {
     setHistoryData(completedHistory);
   }, [incidentData]);
 
+  const handleModal=(x)=>{
+    setModel(x);
+    setViewModal(true);
+  }
+
   if (error) return <p className="text-red-500">{error}</p>;
   if (!patient) return <p>Loading patient data...</p>;
 
   return (
     <div className=" bg-gradient-to-tr to-[#e0f7ff] via-[#c0ecff] from-[#f8fdff] font-mono min-h-screen pt-16 px-4">
+      
+      {viewModal && <ModalCard data={modal} onClose={()=>setViewModal(false)}/>}
+
       {/* Patient Info */}
       <div className="bg-gradient-to-br from-[#fffafb] via-[#fff0f5] to-[#ffffff]
       flex flex-col justify-center items-center py-4 shadow-2xl rounded-2xl mb-6">
@@ -66,7 +77,7 @@ const PatientDashboard = () => {
         overflow-y-auto space-y-2">
           {appointmentData.length > 0 ? (
             appointmentData.map((e) => (
-              <AppointmentCard key={e.id} data={e} />
+              <AppointmentCard key={e.id} data={e} onClick={()=>handleModal(e)}/>
             ))
           ) : (
             <p className="text-center">No Upcoming Appointments</p>
@@ -86,7 +97,7 @@ const PatientDashboard = () => {
           }}
         >
           {historyData.length > 0 ? (
-            historyData.map((e) => <HistoryCard key={e.id} data={e} />)
+            historyData.map((e) => <HistoryCard key={e.id} data={e} onClick={()=>handleModal(e)}/>)
           ) : (
             <p className="text-center">No Records</p>
           )}

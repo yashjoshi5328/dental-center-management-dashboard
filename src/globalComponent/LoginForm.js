@@ -4,6 +4,7 @@ import { login } from '../utils/loginAPI';
 import { saveUserToLocalStorage } from '../utils/localStorage';
 import { useNavigate } from 'react-router-dom';
 const logo = new URL('../assets/logo.png', import.meta.url);
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const LoginForm = () => {
     const [email,setEmail]=useState("");
@@ -11,6 +12,7 @@ const LoginForm = () => {
     const [role,setRole]=useState("Admin");
     const [emailError,setEmailError]=useState('');
     const [passwordError,setPasswordError]=useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [loginData,setLoginData]=useState({
         success:false,
         message:''
@@ -26,8 +28,7 @@ const LoginForm = () => {
     },[loginData]);
     const handleLogin=async (email,password,role)=>{
         try{
-            const res= await login(email,password,role);
-            console.log(res);   
+            const res= await login(email,password,role);   
             setLoginData(res);        
         }catch(e){
             setLoginData(e);
@@ -37,7 +38,6 @@ const LoginForm = () => {
         if(useValidate({email,password,setEmailError,setPasswordError})){
             handleLogin(email,password,role);
         }
-        console.log(emailError,passwordError);
     }
 
   return (
@@ -81,18 +81,29 @@ const LoginForm = () => {
 
         {/* Password */}
         <div>
-          <label className="block mb-1 font-medium flex justify-between">Password
+          <label className="mb-1 font-medium flex justify-between">Password
             <span className='text-red-500'>
                 {passwordError}
             </span>
           </label>
+          <div
+            className='relative'
+          >
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
             placeholder="admin123"
             className="w-full border border-gray-500 focus:ring-1 focus:ring-black rounded px-3 py-2 outline-none"
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(prev => !prev)}
+            className="absolute right-2 top-3  text-gray-600"
+          >
+            {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+          </button>
+          </div>
         </div>
 
         {/* Role Selection */}
