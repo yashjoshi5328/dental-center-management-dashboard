@@ -122,6 +122,7 @@ const Patients = () => {
           patients.map((p) => (
             <div key={p.id} className="bg-gradient-to-br from-pink-100 via-white to-blue-200 shadow-lg rounded-xl p-4 flex flex-col gap-2 border border-gray-200">
               <div className="font-bold text-lg">{p.name}</div>
+              <div className="text-xs text-gray-500 font-bold">ID: {p.id}</div>
               <div><b>DOB:</b> {p.dob}</div>
               <div><b>Contact:</b> {p.contact}</div>
               <div><b>Health Info:</b> {p.healthInfo}</div>
